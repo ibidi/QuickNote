@@ -5,8 +5,8 @@
     <button @click="addNote">Ekle</button>
     <ul>
       <li v-for="(note, index) in notes" :key="index">
-        {{ note }}
-        <button @click="deleteNote(index)">Sil</button>
+        {{ note.text }}
+        <button @click="deleteNote(note.id)">Sil</button>
       </li>
     </ul>
   </div>
@@ -20,42 +20,30 @@ export default {
       notes: []
     }
   },
+  created() {
+    this.loadNotes()
+  },
   methods: {
-    addNote() {
+    async addNote() {
       if (this.newNote !== '') {
-        this.notes.push(this.newNote);
-        this.newNote = '';
+        const docRef = await this.$db.collection('notes').add({
+          text: this.newNote,
+          timestamp: new Date()
+        })
+        this.notes.push({ id: docRef.id, text: this.newNote })
+        this.newNote = ''
       }
     },
-    deleteNote(index) {
-      this.notes.splice(index, 1);
+    async loadNotes() {
+      const querySnapshot = await this.$db.collection('notes').orderBy('timestamp').get()
+      querySnapshot.forEach(doc => {
+        this.notes.push({ id: doc.id, text: doc.data().text })
+      })
+    },
+    async deleteNote(id) {
+      await this.$db.collection('notes').doc(id).delete()
+      this.notes = this.notes.filter(note => note.id !== id)
     }
   }
 }
 </script>
-
-<style>
-.note-app {
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: center;
-}
-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-button {
-  padding: 10px;
-  margin-top: 5px;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  padding: 10px;
-  background: #f4f4f4;
-  margin-bottom: 5px;
-}
-</style>
