@@ -1,5 +1,4 @@
 <p align="center">
-  <img width="150" src="https://user-images.githubusercontent.com/13917975/223648366-85812348-7f6c-4472-98bf-6c3f3ce95a58.png" alt="DSV logo" />
   <h1 align="center">ibidi QuickNote Vue.JS</h1>
 </p>
 
