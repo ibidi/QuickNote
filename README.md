@@ -19,7 +19,7 @@ QuickNote, Vue.js ile geliştirilmiş basit bir not alma uygulamasıdır. Kullan
 
 Projeyi klonla ve gerekli bağımlılıkları kur:
 ```js
-git clone https://github.com/kullaniciadi/QuickNote.git
+git clone https://github.com/ibidi/QuickNote.git
 cd QuickNote
 npm install
 ```
